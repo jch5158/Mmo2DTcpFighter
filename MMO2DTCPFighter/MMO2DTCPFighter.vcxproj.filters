@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="image">
+      <UniqueIdentifier>{75b2a2ef-b1d5-4bee-9791-aeb60d616436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseObject">
+      <UniqueIdentifier>{b9c679a4-3d8a-4fa3-8d5f-d334c946d2b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{aed9c255-79f7-4442-85bb-3d065260060d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Frame">
+      <UniqueIdentifier>{740e9432-c03e-4849-a03a-dc142cbf23ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScreenPrint">
+      <UniqueIdentifier>{6a854d0c-14e5-4497-b388-805bcbc54e74}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MMO2DTCPFighter.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBaseObject.h">
+      <Filter>BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageEffect.h">
+      <Filter>BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerObject.h">
+      <Filter>BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CRingBuffer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CMessage.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CExceptionObject.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CFrameSkip.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="CScreenDib.h">
+      <Filter>ScreenPrint</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpriteDib.h">
+      <Filter>ScreenPrint</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MMO2DTCPFighter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBaseObject.cpp">
+      <Filter>BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageEffect.cpp">
+      <Filter>BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerObject.cpp">
+      <Filter>BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CRingBuffer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CMessage.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="protocol.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CExceptionObject.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrameSkip.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="CScreenDib.cpp">
+      <Filter>ScreenPrint</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteDib.cpp">
+      <Filter>ScreenPrint</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MMO2DTCPFighter.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="MMO2DTCPFighter.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="image\Attack3_R_05.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_R_06.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\HPGuage.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_05.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_06.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_07.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_08.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_09.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_10.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_11.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_L_12.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_05.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_06.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_07.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_08.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_09.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_10.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_11.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Move_R_12.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Shadow.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Stand_L_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Stand_L_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Stand_L_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Stand_R_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Stand_R_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Stand_R_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\xSpark_1.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\xSpark_2.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\xSpark_3.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\xSpark_4.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\_Map.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_L_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_L_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_L_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_L_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_R_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_R_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_R_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack1_R_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_L_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_L_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_L_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_L_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_R_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_R_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_R_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack2_R_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_L_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_L_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_L_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_L_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_L_05.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_L_06.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_R_01.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_R_02.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_R_03.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Attack3_R_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

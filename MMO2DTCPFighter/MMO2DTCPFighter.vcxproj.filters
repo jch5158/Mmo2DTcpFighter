@@ -28,6 +28,9 @@
     <Filter Include="ScreenPrint">
       <UniqueIdentifier>{6a854d0c-14e5-4497-b388-805bcbc54e74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{97e8ec03-6755-4a86-9354-58a835e1f576}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -75,6 +78,9 @@
     <ClInclude Include="CSpriteDib.h">
       <Filter>ScreenPrint</Filter>
     </ClInclude>
+    <ClInclude Include="CTileMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MMO2DTCPFighter.cpp">
@@ -112,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="CSpriteDib.cpp">
       <Filter>ScreenPrint</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMap.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +328,9 @@
       <Filter>image</Filter>
     </Image>
     <Image Include="image\Attack3_R_04.bmp">
+      <Filter>image</Filter>
+    </Image>
+    <Image Include="image\Tile_01.bmp">
       <Filter>image</Filter>
     </Image>
   </ItemGroup>

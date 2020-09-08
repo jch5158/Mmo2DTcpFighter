@@ -113,7 +113,8 @@ void CPlayerObject::InputActionProc()
 
 	case KeyList::eACTION_MOVE_DD:
 
-		if (this->m_iYpos < 467)
+		// 467 이였음
+		if (this->m_iYpos < 6387)
 		{
 			this->m_iYpos += 2;
 		}
@@ -153,7 +154,7 @@ void CPlayerObject::InputActionProc()
 
 	case KeyList::eACTION_MOVE_RR:
 
-		if (this->m_iXpos < 627)
+		if (this->m_iXpos < 6387)
 		{
 			this->m_iXpos += 3;
 		}
@@ -226,7 +227,7 @@ void CPlayerObject::InputActionProc()
 
 	case KeyList::eACTION_MOVE_LD:
 
-		if (this->m_iXpos > 27 && this->m_iYpos < 467)
+		if (this->m_iXpos > 27 && this->m_iYpos < 6387)
 		{
 			this->m_iXpos -= 3;
 			this->m_iYpos += 2;
@@ -251,7 +252,7 @@ void CPlayerObject::InputActionProc()
 
 	case KeyList::eACTION_MOVE_RU:
 
-		if (this->m_iXpos < 627 && this->m_iYpos > 67)
+		if (this->m_iXpos < 6387 && this->m_iYpos > 67)
 		{
 			this->m_iYpos -= 2;
 			this->m_iXpos += 3;
@@ -275,7 +276,7 @@ void CPlayerObject::InputActionProc()
 		break;
 
 	case KeyList::eACTION_MOVE_RD:
-		if (this->m_iXpos < 627 && this->m_iYpos < 467)
+		if (this->m_iXpos < 6387 && this->m_iYpos < 6387)
 		{
 			this->m_iYpos += 2;
 			this->m_iXpos += 3;
@@ -385,14 +386,96 @@ void CPlayerObject::Render()
 	// 백 버퍼의 피치
 	int pitch = ScreenDib.GetPitch();
 
-	// 그림자
-	SpriteDib.DrawSprite(eSHADOW, this->m_iXpos, this->m_iYpos, pDestDib, DestWidth, DestHeight, pitch, 100);
+	int xPos = 0;
+	int yPos = 0;
 
-	// 현재 실행해야될 스프라이트 인덱스값이다.
-	SpriteDib.DrawSprite(this->m_dwSpriteNow, this->m_iXpos, this->m_iYpos, pDestDib, DestWidth, DestHeight, pitch, 100, (void*)this);
+	if (playerObj == this)
+	{		
+		if (this->m_iXpos >= dfRESOLUTION_WIDTH / 2 && this->m_iXpos <= dfRANGE_MOVE_RIGHT - (dfRESOLUTION_WIDTH / 2))
+		{
+			xPos = dfRESOLUTION_WIDTH / 2;
+		}
+		else if (this->m_iXpos <= dfRESOLUTION_WIDTH / 2)
+		{
+			xPos = this->m_iXpos;
+		}
+		else if(this->m_iXpos >= dfRANGE_MOVE_RIGHT - (dfRESOLUTION_WIDTH / 2))
+		{	
+			xPos = this->m_iXpos - (dfRANGE_MOVE_RIGHT - dfRESOLUTION_WIDTH);			
+		}
 
-	// 채력 게이지
-	SpriteDib.DrawSprite(eGUAGE_HP, this->m_iXpos-35, this->m_iYpos+9, pDestDib, DestWidth, DestHeight, pitch,this->m_chHP);
+		if (this->m_iYpos >= (dfRESOLUTION_HEIGHT / 2) + 50 && this->m_iYpos <= dfRANGE_MOVE_BOTTOM - ((dfRESOLUTION_HEIGHT / 2) - 50))
+		{
+			yPos = (dfRESOLUTION_HEIGHT / 2 ) + 50;
+		}
+		else if(this->m_iYpos <= (dfRESOLUTION_HEIGHT / 2) + 50)
+		{ 
+			yPos = this->m_iYpos;
+		}
+		else if (this->m_iYpos >= dfRANGE_MOVE_BOTTOM - ((dfRESOLUTION_HEIGHT / 2) - 50))
+		{
+			yPos = this->m_iYpos - (dfRANGE_MOVE_BOTTOM - dfRESOLUTION_HEIGHT);
+		}
+
+		// 그림자
+		SpriteDib.DrawSprite(eSHADOW, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch, 100);
+
+		// 현재 실행해야될 스프라이트 인덱스값이다.
+		SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch, 100, (void*)this);
+
+		// 채력 게이지
+		SpriteDib.DrawSprite(eGUAGE_HP, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch, this->m_chHP);
+	}
+	else
+	{
+
+		if (playerObj->m_iXpos >= this->m_iXpos)
+		{
+			xPos = (dfRESOLUTION_WIDTH / 2) - (playerObj->m_iXpos - this->m_iXpos);
+			if (xPos < 0)
+			{
+				return;
+			}
+		}
+		else
+		{
+			xPos = (dfRESOLUTION_WIDTH / 2) + (this->m_iXpos - playerObj->m_iXpos);
+			if (xPos > dfRESOLUTION_WIDTH)
+			{
+				return;
+			}
+		}
+
+		if (playerObj->m_iYpos >= this->m_iYpos)
+		{
+			yPos = (dfRESOLUTION_HEIGHT / 2) - (playerObj->m_iYpos - this->m_iYpos) + 50;
+			if (yPos < 0)
+			{
+				return;
+			}
+
+		}
+		else
+		{
+			yPos = (dfRESOLUTION_HEIGHT / 2) + (this->m_iYpos - playerObj->m_iYpos) + 50;
+			if (yPos > dfRESOLUTION_HEIGHT)
+			{
+				return;
+			}
+		}
+
+
+		// 그림자
+		SpriteDib.DrawSprite(eSHADOW, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch, 100);
+
+		// 현재 실행해야될 스프라이트 인덱스값이다.
+		SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch, 100, (void*)this);
+
+		// 채력 게이지
+		SpriteDib.DrawSprite(eGUAGE_HP, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch, this->m_chHP);
+	
+
+	}
 }
 
 // 체력을 셋팅해주는 함수입니다. 

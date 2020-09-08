@@ -2,24 +2,26 @@
 #include "CScreenDib.h"
 #include "CSpriteDib.h"
 #include "CBaseObject.h"
+#include "CPlayerObject.h"
 #include "CDamageEffect.h"
 
 
-CDamageEffect::CDamageEffect(unsigned short usX, unsigned short usY,DWORD actionCur)
+CDamageEffect::CDamageEffect(void* victimPtr,int usX, int usY,DWORD actionCur)
 {
 	this->m_iXpos = usX;
 	this->m_iYpos = usY;
+
+	this->mVictimPtr = victimPtr;
 	this->m_dwActionCur = actionCur;
 	this->deleteCheck = false;
 	this->m_RenderCheck = false;
+
 
 	SetSprite(e_SPRITE::eEFFECT_SPARK_01, e_SPRITE::eEFFECT_SPARK_MAX, 3);
 
 	switch (this->m_dwActionCur)
 	{
 	case KeyList::eACTION_ATTACK1:
-
-
 	{
 		printf_s("attack1\n");
 	}
@@ -88,7 +90,6 @@ void CDamageEffect::Render()
 		return;
 	}
 
-
 	BYTE* pDestDib = ScreenDib.GetDibBuffer();
 
 	// 백 버퍼의 가로길이
@@ -100,7 +101,81 @@ void CDamageEffect::Render()
 	// 백 버퍼의 피치
 	int pitch = ScreenDib.GetPitch();
 
+	int xPos = 0;
+	int yPos = 0;
 
-	// 현재 실행해야될 스프라이트 인덱스값이다.
-	SpriteDib.DrawSprite(this->m_dwSpriteNow, this->m_iXpos, this->m_iYpos, pDestDib, DestWidth, DestHeight, pitch);
+	if (playerObj == this->mVictimPtr)
+	{
+		if (this->m_iXpos >= dfRESOLUTION_WIDTH / 2 && this->m_iXpos <= dfRANGE_MOVE_RIGHT - (dfRESOLUTION_WIDTH / 2))
+		{
+			xPos = dfRESOLUTION_WIDTH / 2;
+		}
+		else if (this->m_iXpos <= dfRESOLUTION_WIDTH / 2)
+		{
+			xPos = this->m_iXpos;
+		}
+		else if (this->m_iXpos >= dfRANGE_MOVE_RIGHT - (dfRESOLUTION_WIDTH / 2))
+		{
+			xPos = this->m_iXpos - (dfRANGE_MOVE_RIGHT - dfRESOLUTION_WIDTH);
+		}
+
+		if (this->m_iYpos >= (dfRESOLUTION_HEIGHT / 2) + 50 && this->m_iYpos <= dfRANGE_MOVE_BOTTOM - ((dfRESOLUTION_HEIGHT / 2) - 50))
+		{
+			yPos = (dfRESOLUTION_HEIGHT / 2) + 50;
+		}
+		else if (this->m_iYpos <= (dfRESOLUTION_HEIGHT / 2) + 50)
+		{
+			yPos = this->m_iYpos;
+		}
+		else if (this->m_iYpos >= dfRANGE_MOVE_BOTTOM - ((dfRESOLUTION_HEIGHT / 2) - 50))
+		{
+			yPos = this->m_iYpos - (dfRANGE_MOVE_BOTTOM - dfRESOLUTION_HEIGHT);
+		}
+
+
+		// 현재 실행해야될 스프라이트 인덱스값이다.
+		SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch);
+	}
+	else
+	{
+		if (playerObj->m_iXpos >= this->m_iXpos)
+		{
+			xPos = (dfRESOLUTION_WIDTH / 2) - (playerObj->m_iXpos - this->m_iXpos);
+			if (xPos < 0)
+			{
+				return;
+			}
+		}
+		else
+		{
+			xPos = (dfRESOLUTION_WIDTH / 2) + (this->m_iXpos - playerObj->m_iXpos);
+			if (xPos > dfRESOLUTION_WIDTH)
+			{
+				return;
+			}
+		}
+
+		if (playerObj->m_iYpos >= this->m_iYpos)
+		{
+			yPos = (dfRESOLUTION_HEIGHT / 2) - (playerObj->m_iYpos - this->m_iYpos) + 50;
+			if (yPos < 0)
+			{
+				return;
+			}
+
+		}
+		else
+		{
+			yPos = (dfRESOLUTION_HEIGHT / 2) + (this->m_iYpos - playerObj->m_iYpos) + 50;
+			if (yPos > dfRESOLUTION_HEIGHT)
+			{
+				return;
+			}
+		}
+
+
+		// 현재 실행해야될 스프라이트 인덱스값이다.
+		SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch);
+	}
+
 }

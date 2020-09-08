@@ -154,6 +154,7 @@
     <ClInclude Include="CRingBuffer.h" />
     <ClInclude Include="CScreenDib.h" />
     <ClInclude Include="CSpriteDib.h" />
+    <ClInclude Include="CTileMap.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MMO2DTCPFighter.h" />
     <ClInclude Include="protocol.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="CRingBuffer.cpp" />
     <ClCompile Include="CScreenDib.cpp" />
     <ClCompile Include="CSpriteDib.cpp" />
+    <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="MMO2DTCPFighter.cpp" />
     <ClCompile Include="protocol.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -244,6 +246,7 @@
     <Image Include="image\Stand_R_01.bmp" />
     <Image Include="image\Stand_R_02.bmp" />
     <Image Include="image\Stand_R_03.bmp" />
+    <Image Include="image\Tile_01.bmp" />
     <Image Include="image\xSpark_1.bmp" />
     <Image Include="image\xSpark_2.bmp" />
     <Image Include="image\xSpark_3.bmp" />

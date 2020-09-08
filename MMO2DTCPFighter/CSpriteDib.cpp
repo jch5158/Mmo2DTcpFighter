@@ -21,6 +21,12 @@ CSpriteDib::CSpriteDib(int m_iMaxSprite,DWORD dwColorKey)
 
 	// 0 으로 memset~
 	memset(m_stpSprite, 0, sizeof(st_SPRITE) * m_iMaxSprite);
+
+	// 타일 넘버 셋팅
+	//memset(this->mTileMap, 0, dfMAP_HEIGHT * dfMAP_WIDTH);
+
+	// 타일 속성 셋팅
+	//memset(this->mTileAttribute, 0, dfMAP_HEIGHT * dfMAP_WIDTH);
 }
 
 CSpriteDib::~CSpriteDib() 
@@ -54,7 +60,6 @@ BOOL CSpriteDib::LoadDibSprite(int iSpriteIndex, const char* szFileName, int iCe
 	BITMAPINFOHEADER stInfoHeader;
 
 	fopen_s(&fp, szFileName, "rb");
-	
 	if (fp == nullptr) {
 		return false;
 	}
@@ -182,6 +187,7 @@ void CSpriteDib::DrawSprite(int iSpriteIndex, short iDrawX, short iDrawY, BYTE* 
 	// 위클로킹
 	if(0 > iDrawY)
 	{
+		// Y 값이 - 가 되기 때문에 -로 부호로 변경하여 빼주어야 한다.
 		iSpriteHeight = iSpriteHeight - (-iDrawY);
 
 		// Y위치와 피치의 길이를 곱한 후 이미지 포인터에 더하여 
@@ -200,7 +206,7 @@ void CSpriteDib::DrawSprite(int iSpriteIndex, short iDrawX, short iDrawY, BYTE* 
 		iSpriteWidth = iSpriteWidth - (-iDrawX);
 
 		
-		// 이미지 정보 포인터에서 X포지션 만큼 더한다.
+		// 이미지 정보 포인터에서 X포지션 만큼 포인터를 옮겨준다.
 		dwpSprite = dwpSprite + (-iDrawX);
 
 		iDrawX = 0;
@@ -212,7 +218,7 @@ void CSpriteDib::DrawSprite(int iSpriteIndex, short iDrawX, short iDrawY, BYTE* 
 	if (iDestHeight <= iDrawY + iSpriteHeight)
 	{
 		// 백 버퍼 세로길이를 넘어간 만큼 이미지를 그릴 세로길이에서 뺀다.
-		iSpriteHeight -= ((iDrawY + stpSprite->iHeight)- iDestHeight);
+		iSpriteHeight -= ((iDrawY + stpSprite->iHeight) - iDestHeight);
 	}
 
 
@@ -299,14 +305,59 @@ void CSpriteDib::DrawImage(int iSpriteIndex,  short iDrawX,  short iDrawY, BYTE*
 	iSpriteWidth = iSpriteWidth * iDrawLen / 100;
 
 	// 백 버퍼 포인터이다.
-	DWORD* dwpDest = (DWORD*)bytDest;
-	
+	DWORD* dwpDest = (DWORD*)bytDest;	
+
 	// 배경 그림 포인터이다.
 	DWORD* dwpSprite = (DWORD*)(stpSprite->bytImage);
 
 	// 인자로 들어온 좌표와 중점 좌표를 계산한다.
 	iDrawX = iDrawX - stpSprite->iCenterPointX;
 	iDrawY = iDrawY - stpSprite->iCenterPointY;	
+
+	// 위클로킹
+	if (0 > iDrawY)
+	{
+		// Y 값이 - 가 되기 때문에 -로 부호로 변경하여 빼주어야 한다.
+		iSpriteHeight = iSpriteHeight - (-iDrawY);
+
+		// Y위치와 피치의 길이를 곱한 후 이미지 포인터에 더하여 
+		// 그려야 될 이미지의 포인터 위치를 셋팅한다.
+		dwpSprite = (DWORD*)(stpSprite->bytImage + stpSprite->iPitch * (-iDrawY));
+
+		// 그리고 iDrawY 값을 0으로 셋튕~
+		iDrawY = 0;
+	}
+
+
+	// 왼쪽 클로킹
+	if (0 > iDrawX)
+	{
+		// 가로길이에서 x포지션의 값을 더한다.
+		iSpriteWidth = iSpriteWidth - (-iDrawX);
+
+
+		// 이미지 정보 포인터에서 X포지션 만큼 포인터를 옮겨준다.
+		dwpSprite = dwpSprite + (-iDrawX);
+
+		iDrawX = 0;
+	}
+
+
+	// 아래클로킹
+	// 이미지의 크기가 메모리 버퍼의 세로 길이를 넘어갔을 때 if문
+	if (iDestHeight <= iDrawY + iSpriteHeight)
+	{
+		// 백 버퍼 세로길이를 넘어간 만큼 이미지를 그릴 세로길이에서 뺀다.
+		iSpriteHeight -= ((iDrawY + stpSprite->iHeight) - iDestHeight);
+	}
+
+
+	// 오른쪽 클리핑
+	if (iDestWidth <= iDrawX + iSpriteWidth)
+	{
+		// 백 버퍼 가로 길이를 넘어간 만큼 이미지를 그릴 가로길이에서 뺀다.
+		iSpriteWidth -= ((iDrawX + iSpriteWidth) - iDestWidth);
+	}
 
 	if (iSpriteWidth <= 0 || iSpriteHeight <= 0)
 		return;
@@ -320,11 +371,11 @@ void CSpriteDib::DrawImage(int iSpriteIndex,  short iDrawX,  short iDrawY, BYTE*
 	{
 		for (int iCntX = 0; iSpriteWidth > iCntX; iCntX++)
 		{
-			if (this->m_dwColorKey != (*dwpSprite & 0x00ffffff)) 
-			{	
+			/*if (this->m_dwColorKey != (*dwpSprite & 0x00ffffff)) 
+			{*/	
 				// 백 버퍼에 4BYTE 만큼 씩 복사한다.
 				*dwpDest = *dwpSprite;
-			}
+			//}
 
 			dwpDest++;
 			dwpSprite++;

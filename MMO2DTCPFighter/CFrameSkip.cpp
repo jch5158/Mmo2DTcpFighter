@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "CBaseObject.h"
+#include "CPlayerObject.h"
 #include "CFrameSkip.h"
 
 CFrameSkip::CFrameSkip()
@@ -33,9 +35,9 @@ bool CFrameSkip::UpdateCheck(HWND hWnd) {
 		frameNow = 0;
 	}
 
-	WCHAR text[20];
+	WCHAR text[100];
 
-	wsprintf(text, L"Logic : %d", frameCheck);
+	wsprintf(text, L"Logic : %d  [ X : %d, Y : %d ]", frameCheck,playerObj->m_iXpos, playerObj->m_iYpos);
 
 	SetWindowTextW(hWnd, text);
 

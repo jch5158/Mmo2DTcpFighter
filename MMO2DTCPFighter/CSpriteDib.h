@@ -44,7 +44,7 @@ public:
 
 protected:
 
-	// 스프라이트 배열 정보
+	// 스프라이트 배열 길이
 	int m_iMaxSprite;
 
 	// 이미지 정보 배열

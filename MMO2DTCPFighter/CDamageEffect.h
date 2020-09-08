@@ -4,7 +4,7 @@ class CDamageEffect : public CBaseObject
 {
 public:
 
-	CDamageEffect(unsigned short usX, unsigned short usY,DWORD actionCur);
+	CDamageEffect(void* victimPtr,int usX, int usY,DWORD actionCur);
 
 	virtual ~CDamageEffect();
 
@@ -17,6 +17,11 @@ public:
 	void Update();
 
 	void Render();
+
+private:
+
+	// 맞은 캐릭터의 포인터
+	void* mVictimPtr;
 
 };
 

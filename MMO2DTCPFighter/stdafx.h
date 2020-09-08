@@ -2,9 +2,20 @@
 #pragma comment(lib,"Ws2_32")
 #pragma comment(lib,"winmm.lib")
 
-
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+
+#define dfMAP_WIDTH	    100
+#define dfMAP_HEIGHT    100
+
+
+#define dfRANGE_MOVE_TOP	0
+#define dfRANGE_MOVE_LEFT	0
+#define dfRANGE_MOVE_RIGHT	6400
+#define dfRANGE_MOVE_BOTTOM	6400
+
+#define dfRESOLUTION_WIDTH 640
+#define dfRESOLUTION_HEIGHT 480
 
 #include <WinSock2.h>
 #include <WS2tcpip.h>

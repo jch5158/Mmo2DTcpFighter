@@ -9,6 +9,7 @@
 #include "CSpriteDib.h"
 #include "CScreenDib.h"
 #include "CRingBuffer.h"
+#include "CTileMap.h"
 #include "CFrameSkip.h"
 #include "CBaseObject.h"
 #include "CDamageEffect.h"
@@ -17,7 +18,7 @@
 
 #define WM_NETWORK (WM_USER+1)
 
-#define SERVERPORT 5000
+#define SERVERPORT 20000
 #define SERVERIP L"127.0.0.1"
 
 #define MAX_LOADSTRING 100
@@ -73,6 +74,8 @@ BOOL                InitialGame(void);
 // 네트워크 관련 함수입니다.
 //==================================================================
 
+bool SocketSetting();
+
 // client socket 분기문입니다.
 BOOL NetworkProc(WPARAM wParam, LPARAM lParam);
 
@@ -82,6 +85,8 @@ BOOL SendEvent();
 BOOL SendPacket(stHeader* pHeader, char* pPacket);
 
 void SendProc();
+
+
 
 // 구조체를 사용한 예제입니다.
 //void PackingMoveStart(stHeader* pHeader, stPacketCsMoveStart *packetCsMoveStart,BYTE dirCur, unsigned short usX, unsigned short usY);
@@ -97,8 +102,9 @@ void PackingAttack2(stHeader* pHeader, CMessage* message, BYTE dirCur, unsigned 
 void PackingAttack3(stHeader* pHeader, CMessage* message, BYTE dirCur, unsigned short usX, unsigned short usY);
 
 
-// recv 데이터를 분기하여 처리하는 함수입니다. 
 
+
+// recv 데이터를 분기하여 처리하는 함수입니다. 
 // read event 를 발생시키는 함수입니다.
 BOOL ReadEvent();
 
@@ -167,58 +173,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     AllocConsole();
     freopen("CONOUT$", "r+t", stdout);
 
-
-    int retval;
-
-    WSADATA wsa;
-
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    if (!SocketSetting())
     {
-        wprintf_s(L"wsastart up error : %d\n", WSAGetLastError());
         return -1;
     }
-
-
-    session.g_Socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (session.g_Socket == INVALID_SOCKET)
-    {
-        wprintf_s(L"socket error : %d\n", WSAGetLastError());
-        return -1;
-    }
-
-    linger opt;
-    opt.l_onoff = 1;
-    opt.l_linger = 0;
-    retval = setsockopt(session.g_Socket, SOL_SOCKET, SO_LINGER, (char*)&opt, sizeof(opt));
-    if (retval == SOCKET_ERROR)
-    {
-        wprintf_s(L"setsockopt error : %d\n", WSAGetLastError());
-        return -1;
-    }
-
-    retval = WSAAsyncSelect(session.g_Socket, hWnd, WM_NETWORK, FD_CONNECT | FD_READ | FD_WRITE | FD_CLOSE);
-    if (retval == SOCKET_ERROR)
-    {
-        wprintf_s(L"WSAAsync error : %d\n", WSAGetLastError());
-        return -1;
-    }
-
-    SOCKADDR_IN serverAddr;
-    ZeroMemory(&serverAddr, sizeof(serverAddr));
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(SERVERPORT);
-    InetPtonW(AF_INET, SERVERIP, &serverAddr.sin_addr);
-
-    retval = connect(session.g_Socket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
-    if (retval == SOCKET_ERROR)
-    {
-        if (WSAGetLastError() != WSAEWOULDBLOCK)
-        {
-            wprintf_s(L"connect error : %d\n", WSAGetLastError());
-            return -1;
-        }
-    }
-
+    
     InitialGame();
 
     while (1)
@@ -247,6 +206,62 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 
+bool SocketSetting()
+{
+    int retval;
+
+    WSADATA wsa;
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    {
+        wprintf_s(L"wsastart up error : %d\n", WSAGetLastError());
+        return false;
+    }
+
+
+    session.g_Socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (session.g_Socket == INVALID_SOCKET)
+    {
+        wprintf_s(L"socket error : %d\n", WSAGetLastError());
+        return false;
+    }
+
+    linger opt;
+    opt.l_onoff = 1;
+    opt.l_linger = 0;
+    retval = setsockopt(session.g_Socket, SOL_SOCKET, SO_LINGER, (char*)&opt, sizeof(opt));
+    if (retval == SOCKET_ERROR)
+    {
+        wprintf_s(L"setsockopt error : %d\n", WSAGetLastError());
+        return false;
+    }
+
+    retval = WSAAsyncSelect(session.g_Socket, hWnd, WM_NETWORK, FD_CONNECT | FD_READ | FD_WRITE | FD_CLOSE);
+    if (retval == SOCKET_ERROR)
+    {
+        wprintf_s(L"WSAAsync error : %d\n", WSAGetLastError());
+        return false;
+    }
+
+    SOCKADDR_IN serverAddr;
+    ZeroMemory(&serverAddr, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(SERVERPORT);
+    InetPtonW(AF_INET, SERVERIP, &serverAddr.sin_addr);
+
+    retval = connect(session.g_Socket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
+    if (retval == SOCKET_ERROR)
+    {
+        if (WSAGetLastError() != WSAEWOULDBLOCK)
+        {
+            wprintf_s(L"connect error : %d\n", WSAGetLastError());
+            false;
+        }
+    }
+
+    return true;
+}
+
 
 //
 //  함수: MyRegisterClass()
@@ -259,7 +274,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
+    wcex.style          = CS_HREDRAW | CS_VREDRAW ;
     wcex.lpfnWndProc    = WndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
@@ -288,8 +303,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+  /* hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+       CW_USEDEFAULT, 0, 640, 480, nullptr, nullptr, hInstance, nullptr);*/
+
+   hWnd = CreateWindowW(szWindowClass, szTitle,  WS_SYSMENU | WS_MINIMIZEBOX,
        CW_USEDEFAULT, 0, 640, 480, nullptr, nullptr, hInstance, nullptr);
+
 
    WindowRect.top = 0;
    WindowRect.left = 0;
@@ -409,8 +428,10 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 BOOL InitialGame(void) {
 
     // 이미지 가져오기
-    SpriteDib.LoadDibSprite(e_SPRITE::eMAP, "image/_Map.bmp", 0, 0);
+     //SpriteDib.LoadDibSprite(e_SPRITE::eMAP, "image/_Map.bmp", 0, 0);
 
+    // 타일 맵 셋팅
+    SpriteDib.LoadDibSprite(e_SPRITE::eMAP, "image/Tile_01.bmp", 0, 0);
 
     // 이미지 가져오기
     SpriteDib.LoadDibSprite(e_SPRITE::ePLAYER_MOVE_L01, "image/Move_L_01.bmp", 71, 90);
@@ -481,7 +502,7 @@ BOOL InitialGame(void) {
     SpriteDib.LoadDibSprite(e_SPRITE::eEFFECT_SPARK_03, "image/xSpark_3.bmp", 70, 125);
     SpriteDib.LoadDibSprite(e_SPRITE::eEFFECT_SPARK_04, "image/xSpark_4.bmp", 70, 125);
 
-    SpriteDib.LoadDibSprite(e_SPRITE::eGUAGE_HP, "image/HPGuage.bmp", 0, 0);
+    SpriteDib.LoadDibSprite(e_SPRITE::eGUAGE_HP, "image/HPGuage.bmp", 35, -9);
     SpriteDib.LoadDibSprite(e_SPRITE::eSHADOW, "image/Shadow.bmp", 32, 4);
 
     return true;
@@ -490,21 +511,24 @@ BOOL InitialGame(void) {
 // 랜더 함수
 BOOL Render(void)
 {
-    // 백 버퍼를 받는다.
-    BYTE* pDestDib = ScreenDib.GetDibBuffer();
+    //// 백 버퍼를 받는다.
+    //BYTE* pDestDib = ScreenDib.GetDibBuffer();
 
-    // 백 버퍼의 가로길이
-    int DestWidth = ScreenDib.GetWidth();
+    //// 백 버퍼의 가로길이
+    //int DestWidth = ScreenDib.GetWidth();
 
-    // 백 버퍼의 세로길이
-    int DestHeight = ScreenDib.GetHeight();
+    //// 백 버퍼의 세로길이
+    //int DestHeight = ScreenDib.GetHeight();
 
-    // 백 버퍼의 피치
-    int pitch = ScreenDib.GetPitch();
+    //// 백 버퍼의 피치
+    //int pitch = ScreenDib.GetPitch();
 
 
-    // 백버퍼에 배경 이미지를 셋팅한다. 
-    SpriteDib.DrawImage(0, 0, 0, pDestDib, DestWidth, DestHeight, pitch);
+    //// 백버퍼에 배경 이미지를 셋팅한다. 
+    //SpriteDib.DrawImage(e_SPRITE::eMAP, 0, 0, pDestDib, DestWidth, DestHeight, pitch);
+
+
+    tileMap.TileMapDrawing();
 
     ListYaxixSort();
 
@@ -1386,8 +1410,9 @@ bool PacketProcDamage(CMessage* message)
             {
                 if ((*iterIn)->m_dwObjectID == uiAttackerID)
                 {
+ 
                     // (*iterIn)->m_ActionInput 은 공격자의 액션에 따라서 이펙트 시간이 달라지기 위함
-                    effct = new CDamageEffect((*iter)->m_iXpos, (*iter)->m_iYpos, (*iterIn)->m_ActionInput);
+                    effct = new CDamageEffect((*iter),(*iter)->m_iXpos, (*iter)->m_iYpos, (*iterIn)->m_ActionInput);
 
                     objList.push_back(effct);
 

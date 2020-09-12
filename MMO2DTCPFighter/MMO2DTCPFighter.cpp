@@ -1217,6 +1217,7 @@ bool PacketProcDeleteCharacter(CMessage* message)
     //    }
     //} 
 
+    wprintf_s(L"recv delete packet\n");
 
     auto iterE = objList.end();
 

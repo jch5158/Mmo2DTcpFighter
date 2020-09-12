@@ -131,51 +131,60 @@ void CDamageEffect::Render()
 		{
 			yPos = this->m_iYpos - (dfRANGE_MOVE_BOTTOM - dfRESOLUTION_HEIGHT);
 		}
-
-
-		// 현재 실행해야될 스프라이트 인덱스값이다.
-		SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch);
 	}
 	else
 	{
-		if (playerObj->m_iXpos >= this->m_iXpos)
+		int playerX;
+		int playerY;
+
+		if (playerObj->m_iXpos <= dfRESOLUTION_WIDTH / 2)
 		{
-			xPos = (dfRESOLUTION_WIDTH / 2) - (playerObj->m_iXpos - this->m_iXpos);
-			if (xPos < 0)
-			{
-				return;
-			}
+			playerX = playerObj->m_iXpos;
+		}
+		else if (playerObj->m_iXpos >= dfRANGE_MOVE_RIGHT - (dfRESOLUTION_WIDTH / 2))
+		{
+			playerX = playerObj->m_iXpos - (dfRANGE_MOVE_RIGHT - dfRESOLUTION_WIDTH);
 		}
 		else
 		{
-			xPos = (dfRESOLUTION_WIDTH / 2) + (this->m_iXpos - playerObj->m_iXpos);
-			if (xPos > dfRESOLUTION_WIDTH)
-			{
-				return;
-			}
+			playerX = dfRESOLUTION_WIDTH / 2;
 		}
 
-		if (playerObj->m_iYpos >= this->m_iYpos)
+		if (this->m_iXpos >= playerObj->m_iXpos)
 		{
-			yPos = (dfRESOLUTION_HEIGHT / 2) - (playerObj->m_iYpos - this->m_iYpos) + 50;
-			if (yPos < 0)
-			{
-				return;
-			}
-
+			xPos = playerX + (this->m_iXpos - playerObj->m_iXpos);
 		}
 		else
 		{
-			yPos = (dfRESOLUTION_HEIGHT / 2) + (this->m_iYpos - playerObj->m_iYpos) + 50;
-			if (yPos > dfRESOLUTION_HEIGHT)
-			{
-				return;
-			}
+			xPos = playerX - (playerObj->m_iXpos - this->m_iXpos);
 		}
 
 
-		// 현재 실행해야될 스프라이트 인덱스값이다.
-		SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch);
+		if (playerObj->m_iYpos <= (dfRESOLUTION_HEIGHT / 2) + 50)
+		{
+			playerY = playerObj->m_iYpos;
+		}
+		else if (playerObj->m_iYpos >= dfRANGE_MOVE_BOTTOM - ((dfRESOLUTION_HEIGHT / 2) - 50))
+		{
+			playerY = playerObj->m_iYpos - (dfRANGE_MOVE_BOTTOM - dfRESOLUTION_HEIGHT);
+		}
+		else
+		{
+			playerY = (dfRESOLUTION_HEIGHT / 2) + 50;
+		}
+
+		if (this->m_iYpos >= playerObj->m_iYpos)
+		{
+			yPos = playerY + (this->m_iYpos - playerObj->m_iYpos);
+		}
+		else
+		{
+			yPos = playerY - (playerObj->m_iYpos - this->m_iYpos);
+		}
 	}
+
+
+	// 현재 실행해야될 스프라이트 인덱스값이다.
+	SpriteDib.DrawSprite(this->m_dwSpriteNow, xPos, yPos, pDestDib, DestWidth, DestHeight, pitch);
 
 }
